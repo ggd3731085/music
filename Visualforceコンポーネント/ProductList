@@ -1,0 +1,19 @@
+<apex:component controller="ProductList">
+           
+<!-- 商品を繰り返し表示、bootstrapカード型を利用 -->
+<section id="card">
+<apex:repeat value="{!nameList}" var="pro">
+    <div class="card">
+        <img class="card-img-top" src="/resource/1525590750000/{!pro.img__c}" alt="{!pro.Name}"/>
+        <div class="card-body">
+            <p class="card-title">{!pro.Name}&nbsp;￥{!pro.price__c}</p>
+            <p class="card-text">{!pro.Description}</p>
+            <apex:outputLink styleclass="btn btn-primary" value="{!$Page.home}" >カートに入れる
+                <apex:param name="i" value="{!pro.Id}"/>
+            </apex:outputLink>
+        </div>
+    </div>
+</apex:repeat>
+</section>
+    
+</apex:component>

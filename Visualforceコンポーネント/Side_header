@@ -1,0 +1,75 @@
+<apex:component >
+             
+            <div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item" style="font-weight: bold;">Categoryから探す</li>
+                    <li class="list-group-item">
+                        <apex:outputLink value="{!$Page.category}" >Guitar
+                        <apex:param name="p" value="guitar"/>
+                        </apex:outputLink>
+                    </li>
+                    <li class="list-group-item">
+                        <apex:outputLink value="{!$Page.category}" >Bass
+                        <apex:param name="p" value="bass"/>
+                        </apex:outputLink>
+                    </li>
+                    <li class="list-group-item">
+                        <apex:outputLink value="{!$Page.category}" >Drum
+                        <apex:param name="p" value="drum"/>
+                        </apex:outputLink>
+                    </li>
+                    <li class="list-group-item">
+                        <apex:outputLink value="{!$Page.category}">piano
+                        <apex:param name="p" value="piano"/>
+                        </apex:outputLink>
+                    </li>
+                    <li class="list-group-item">
+                        <apex:outputLink value="{!$Page.category}">headphone
+                        <apex:param name="p" value="headphone"/>
+                        </apex:outputLink>
+                    </li>
+                    <li class="list-group-item">
+                        <apex:outputLink value="{!$Page.category}">effector
+                        <apex:param name="p" value="effector"/>
+                        </apex:outputLink>
+                    </li>
+                    <li class="list-group-item">
+                        <apex:outputLink value="{!$Page.category}" >amp
+                        <apex:param name="p" value="amp"/>
+                        </apex:outputLink>
+                    </li>
+                    <li class="list-group-item">
+                        <apex:outputLink value="{!$Page.category}" >accessory
+                        <apex:param name="p" value="accessory"/>
+                        </apex:outputLink>
+                    </li>
+                    <li class="list-group-item">
+                        <apex:outputLink value="{!$Page.category}" >case
+                        <apex:param name="p" value="case"/>
+                        </apex:outputLink>
+                    </li>
+                    <li class="list-group-item">
+                        <apex:outputLink value="{!$Page.category}" >other
+                        <apex:param name="p" value="other"/>
+                        </apex:outputLink>
+                    </li>
+
+                </ul>
+            </div>
+            
+            <div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item"  style="font-weight: bold; margin-top:20px;">ジャンルから探す</li>
+                  <li class="list-group-item">Beginner</li>
+                  <li class="list-group-item">medium</li>
+                  <li class="list-group-item">advanced</li>
+                </ul>
+            </div>
+            
+            <!-- Twitter -->
+            <a class="twitter-timeline" href="https://twitter.com/hashtag/guitar" data-widget-id="992086284905545729">#guitar のツイート</a>
+        
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    
+    
+</apex:component>

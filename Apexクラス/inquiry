@@ -1,0 +1,125 @@
+public class inquiry {
+    
+    /********************************
+     * 　　変数定義
+     * *******************************/
+
+    //お問い合わせ作成
+    public String inputName {get; set;}
+    public String inputMail {get; set;}
+    public String inputPhone {get; set;}
+    public String inputDescription {get; set;}
+    public String inputCaseType {get; set;}
+    public String inputSubject {get; set;}
+    
+    //問い合わせ者情報
+    public String UserEmail {get; set;}
+    public String UserId {get; set;}
+    
+    //ヘッダー情報
+    public String UserName {get; set;} 
+    public boolean render {get; set;} 
+    public String CookieId ;
+    
+    //問い合わせ履歴の有無
+    public boolean InquiryHistory {get; set;} 
+    
+    /********************************
+     * 　　ユーザに紐づく問い合わせ履歴一覧
+     * *******************************/
+    
+    public List<Case> CaseList {
+    get {
+        List<case> CaseList = new List<case>();
+            CaseList  = [Select Id,mail__c,Subject,CreatedDate,Description from case where mail__c = :UserEmail order by LastModifiedDate desc];
+        return CaseList;
+        
+    }set;}
+    
+    /********************************
+     * 　　コンストラクタ
+     * 　　・クッキー情報を取得し、
+     * 　　　　ユーザが存在するかをチェック
+     * *******************************/
+    public inquiry() {
+         //クッキー情報を取得
+        Cookie get_cookie = ApexPages.currentPage().getCookies().get(CommonController.theCookieName);
+        if (get_cookie == null) {
+            
+        //クッキー情報がある場合
+        }else{
+            System.debug('sessionidは'+get_cookie.getValue());
+            CookieId = get_cookie.getValue();
+            List<session__c> session = [Select Id,Name,userId__c, available__c,sessionId__c from Session__c where sessionId__c  = :CookieId];
+        
+            //クッキーがセッションに登録されている場合
+            if(session.size() == 1){
+                render = true;
+                System.debug('【inquiry】セッション情報に見つかりました.Emailは'+session[0].userId__c);
+                
+                //ユーザ情報の取得
+                List<user__c> user = [Select Id,id__c,Name  from user__c where id__c  = :session[0].userId__c];
+                UserName = user[0].Name;
+                UserEmail = user[0].Id__c;
+                UserId = user[0].Id;
+                
+                //問い合わせ履歴の取得
+                List<CaseHistory__c > casehistory = [Select Case__c from CaseHistory__c  where User__c = :user[0].Id order by LastModifiedDate desc limit 1];
+
+                    //問い合わせ履歴が存在する場合
+                    if(casehistory.size() == 1){
+                        //問い合わせ履歴一覧を表示する
+                        InquiryHistory = true;
+                        System.debug('問い合わせ履歴を表示します');
+                    }
+                
+            }
+        }
+    }
+
+    //問い合わせを作成するボタン押下
+    public PageReference Inquirycreate(){
+        
+        if(UserName == null){
+            Case ca=new Case();
+            ca.Name__c=inputName;
+            ca.mail__c=inputMail;
+            ca.phone__c=inputPhone;
+            ca.Description=inputDescription;
+            ca.CaseType__c=inputCaseType;
+            ca.Subject=inputSubject;
+            insert ca;
+            System.debug('非ログインユーザのケースが作成されました');
+            return Page.home;
+        }else{
+            Case ca=new Case();
+            ca.Name__c=UserName;
+            ca.mail__c=UserEmail;
+            ca.phone__c=inputPhone;
+            ca.Description=inputDescription;
+            ca.CaseType__c=inputCaseType;
+            ca.Subject=inputSubject;
+            ca.EmailId__c =inputMail;
+            insert ca;
+            String OutputCaseID = ca.Id;
+            system.debug(ca.Id);
+            
+            /********************************
+             * 　　問い合わせ履歴作成
+             * *******************************/
+            CaseHistory__c  casehis = new CaseHistory__c();
+            //List<case> ca2  = [Select Id,mail__c from case where Id = :OutputCaseID order by LastModifiedDate desc];
+
+            casehis.Case__c = OutputCaseID;
+            casehis.User__c = UserId;
+            
+            system.debug('casehistoryには' + casehis);
+           
+            insert casehis;
+            
+            
+            return Page.home;
+        }
+    }
+    
+}

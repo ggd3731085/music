@@ -1,0 +1,101 @@
+<apex:page controller="LoginController" standardStylesheets="false" showHeader="false" docType="html-5.0"  action="{!Startaction}" >
+
+<head>
+    <title>M:usic - shopping!! -</title>
+    <c:metadata />
+</head>
+
+<html><body class="body_shop">
+<apex:outputPanel rendered="{!NOT(render)}">
+    <c:Music_header />
+</apex:outputPanel>
+<apex:outputPanel rendered="{!render}">
+    <c:Login_header />
+</apex:outputPanel>
+    
+
+<div class="container home-body">
+    <div>
+        <div>
+             <a href="{!$page.home}">&gt; Continue Shopping</a>
+        </div>
+    </div>
+    <div>
+        
+    </div>
+    <h2 style="margin-top: 20px;">
+        下記商品を購入しますか？
+    </h2>
+  
+    <!-- 商品を繰り返し表示、bootstrapカード型を利用 -->
+<section id="card">
+    <apex:form >
+        <apex:repeat value="{!CartList}" var="pro" rows="6">
+            <div id="productList">
+                <img class="product_img" src="/resource/1525590750000/{!pro.img__c}" alt="{!pro.ProductName__c}" height="100"/>
+                <div class="product_right">
+                    <p class="product_pclass">{!pro.ProductName__c}&nbsp;￥{!pro.price__c}</p>
+                    <p class="">{!pro.Description__c}</p>
+                </div>
+            </div>
+        </apex:repeat>
+    </apex:form>
+</section>
+    <apex:form >
+                <div class="product_pricetotal">
+                    購入予定金額　合計 {!CartTotal}円
+                </div>
+                <apex:commandButton styleClass="btn btn-primary" value="購入する" action="{!Purchased}" />
+    </apex:form>
+</div>
+    
+
+    
+
+<!-- モーダル・ダイアログ -->
+<div class="modal fade" id="sampleModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">M:usic ログイン画面</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>×</span></button>  
+            </div>
+            <!-- モーダル内容 -->
+            <div class="modal-body">
+                <apex:form >
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-3">ID</div>
+                            <div class="col-md-9">
+                                <apex:inputText value="{!inputUser.id__c}" />
+                            </div>
+                   　    </div>
+                        <div class="row">
+                            <div class="col-md-3">PassWord</div>
+                            <div class="col-md-9">
+                                <apex:inputSecret value="{!inputUser.password__c}" />
+                            </div>
+                   　    </div>
+                        <div>
+                            <apex:commandButton value="Login" action="{!actionLogin}" />
+                        </div>
+                    </div>
+                    <div class="modal-creatuser">
+                    新規登録は<a href="{!$Page.UserCreate}">こちら</a>
+                    </div>
+                </apex:form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+<c:Music_footer />
+    
+</body>
+</html>
+
+</apex:page>

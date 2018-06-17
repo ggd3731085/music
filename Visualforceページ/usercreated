@@ -1,0 +1,49 @@
+<apex:page controller="LoginController" standardStylesheets="false" showHeader="false" docType="html-5.0">
+
+<head>
+    <title>M:usic - 会員登録 -</title>
+    <c:metadata />
+    <style>
+    .control-group {
+        margin-bottom: 8px;    
+    }
+    input.btn.btn-default.btn-create {
+        border: 1px solid #3e3737;
+        background-color: #f5c9dc;
+    }
+    </style>
+</head>
+
+<html><body>
+<apex:outputPanel rendered="{!NOT(render)}">
+    <c:Music_header />
+</apex:outputPanel>
+<apex:outputPanel rendered="{!render}">
+    <c:Login_header />
+</apex:outputPanel>
+
+    
+<div class="container mt60" id="mainContainer" style="margin-top: 130px">
+
+<section>
+    
+<ul class="breadcrumb">
+<li><a href="{!$Page.home}">トップ</a></li>
+    <li style="color: #888;"><a href="{!$Page.UserCreate}">新規ユーザー登録</a></li>
+<li class="active">登録完了</li>
+</ul>
+
+<h1 class="page-header">登録が完了しました！</h1>
+    <p  style="margin-top:50px;">ご登録ありがとうございます。<br />
+    メールが届きますのでそちらのURLをクリックし、ログインをしてください。</p>
+</section>
+
+
+</div>
+
+<c:Music_footer />
+    
+</body>
+</html>
+
+</apex:page>

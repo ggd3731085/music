@@ -1,0 +1,92 @@
+<apex:page controller="LoginController" standardStylesheets="false" showHeader="false" docType="html-5.0">
+
+<head>
+    <title>M:usic - 会員登録 -</title>
+    <c:metadata />
+    <style>
+        .control-label{
+            float: left;
+            width: 200px;
+        }
+        .control-group {
+            margin-bottom: 8px;    
+        }
+        input.btn.btn-default.btn-create {
+            border: 1px solid #3e3737;
+            background-color: #f5c9dc;
+        }
+        .help-block {
+            ont-size: 13px;
+            color: gray;
+        }
+        .control-form {
+            margin: 50px 0 30px 0;
+        }
+    </style>
+</head>
+
+<html><body>
+<apex:outputPanel rendered="{!NOT(render)}">
+    <c:Music_header />
+</apex:outputPanel>
+<apex:outputPanel rendered="{!render}">
+    <c:Login_header />
+</apex:outputPanel>
+
+    
+<div class="container mt60" id="mainContainer" style="margin-top: 130px">
+
+<section>
+    
+<ul class="breadcrumb">
+<li><a href="{!$Page.home}">トップ</a></li>
+    <li class="active">新規ユーザー登録</li>
+<li style="color: #888;">登録完了</li>
+</ul>
+
+<h1 class="page-header">ようこそ！</h1>
+<p>初めての方はまずはユーザー登録をしてください。登録すると、簡単に買い物することができます。</p>
+</section>
+
+
+<div class="sbox">
+    
+    <div class="sboxInner">
+    <apex:form >
+        <div class="control-form">
+            <div class="control-group">
+                <label class="control-label" for="">氏名</label>
+                <div class="controls">
+                    <apex:input type="text" html-placeholder="田中太郎" required="true" html-autofocus="false" id="inputNewName" value="{!inputNewName}"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="">メールアドレス</label>
+                <div class="controls">
+                    <apex:input type="text" html-placeholder="music@cc.jp" required="true" html-autofocus="false" id="inputNewEmail" value="{!inputNewEmail}"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="">パスワード</label>
+                <div class="controls">
+                    <apex:inputSecret id="inputNewPassword" value="{!inputNewPassword}" required="true" />
+                <div class="help-block">パスワードは6文字以上にしてください。</div>
+            </div>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <apex:commandButton action="{!ContactUser}" value="ユーザー登録する" styleclass="btn btn-primary" />
+            </div>
+        </div>
+    </apex:form>
+</div>
+</div>
+</div>
+
+<c:Music_footer />
+    
+</body>
+</html>
+
+</apex:page>

@@ -1,0 +1,124 @@
+<apex:component controller="LoginController" allowDML="true" >
+    <head>
+        <c:metadata />    
+    </head>
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a href="{!$Page.home}" class="navbar-brand" >M:usic</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation" >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarsExample05">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a href="{!$Page.home}" class="nav-link">Home</a><span class="sr-only">(current)</span>
+                </li>
+                <li class="nav-item">
+                    <a href="{!$Page.about}" class="nav-link disabled">about</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{!$Page.shop}">Shop</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{!$Page.inquiry}" class="nav-link disabled">Inquiry</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category</a>
+                <div class="dropdown-menu" aria-labelledby="dropdown05">
+                    <apex:outputLink styleclass="dropdown-item" value="{!$Page.category}" >ギター
+                        <apex:param name="p" value="guitar"/>
+                    </apex:outputLink>
+                    <apex:outputLink value="{!$Page.category}" styleclass="dropdown-item" >ベース
+                        <apex:param name="p" value="bass"/>
+                    </apex:outputLink>
+                    <apex:outputLink value="{!$Page.category}" styleclass="dropdown-item" >ドラム
+                        <apex:param name="p" value="drum"/>
+                    </apex:outputLink>
+                    <apex:outputLink value="{!$Page.category}" styleclass="dropdown-item">ピアノ
+                        <apex:param name="p" value="piano"/>
+                    </apex:outputLink>
+                    <apex:outputLink value="{!$Page.category}" styleclass="dropdown-item">ヘッドホン
+                        <apex:param name="p" value="headphone"/>
+                    </apex:outputLink>
+                    <apex:outputLink value="{!$Page.category}" styleclass="dropdown-item">エフェクター
+                        <apex:param name="p" value="effector"/>
+                    </apex:outputLink>
+                    <apex:outputLink value="{!$Page.category}" styleclass="dropdown-item" >アンプ
+                        <apex:param name="p" value="amp"/>
+                    </apex:outputLink>
+                    <apex:outputLink value="{!$Page.category}" styleclass="dropdown-item" >アクセサリ
+                        <apex:param name="p" value="accessory"/>
+                    </apex:outputLink>
+                    <apex:outputLink value="{!$Page.category}" styleclass="dropdown-item" >ケース
+                        <apex:param name="p" value="case"/>
+                    </apex:outputLink>
+                    <apex:outputLink value="{!$Page.category}" styleclass="dropdown-item" >その他
+                        <apex:param name="p" value="other"/>
+                    </apex:outputLink>              
+                </div>
+                </li>
+                <li>
+                <apex:form styleclass="form-inline my-2 my-md-0">
+                    <apex:inputText styleclass="form-control form-search" html-placeholder="Search" value="{!inputSearch}"/>
+                    <apex:outputLink value="{!$Page.category}" styleclass="btn btn-default form-searchbutton" >
+                        <i class="fas fa-search"></i>
+                        <apex:param name="p" value="{!inputSearch}"/>
+                    </apex:outputLink>
+                </apex:form>
+                </li>
+            </ul>
+            
+            <div style="color:white;font-size:13px;">
+                こんにちは
+                <span class="text-danger">{!UserName}</span>さん<br />
+                <apex:form >
+                    <apex:commandButton action="{!logout}" value="ログアウトはこちら" styleclass="btn btn-default"></apex:commandButton>
+                </apex:form>
+                
+            </div>
+            
+            <label for="cart" class="shoppingcart"> 
+                <i class="fas fa-shopping-cart fa-2x"></i>
+                <div class="cart_count">{!Cartcount}</div>
+            </label>
+            
+        </div>
+        </nav>
+    </header>
+    
+    <div class="shoppingcartbox">
+        <input type="checkbox" id="cart"/>
+            <!--非表示ここから-->     
+            <div class="cart_left">
+            .
+            </div>
+        
+            <div class="cart_content">
+                <h3 class="cart_title">
+                    <label for="cart" class="cart_title_back">></label>Cart
+                </h3>
+                <div class="cart_body">
+                    <apex:repeat value="{!CartList}" var="cart">
+                        <div class="CartList">
+                            <div class="Cartlist_item"><img class="cart_content_img" src="/resource/1525590750000/{!cart.img__c}" alt="" /></div>
+                            <apex:outputLink styleclass="Cartlist_cancel" value="{!$Page.home}" >✖︎
+                                <apex:param name="c" value="{!cart.Product__c}"/>
+                            </apex:outputLink>
+                            <div class="CartList_right">
+                                <div class="Cartlist_item">商品名<br />{!cart.ProductName__c}</div>
+                                <div class="Cartlist_item">価格<br />￥{!cart.price__c}</div>
+                            </div>
+                        </div>
+                    </apex:repeat>
+                    <div class="Cartlist_result">合計{!CartTotal}円</div>
+                    <apex:outputLink styleclass="btn btn-primary" value="{!$Page.ShoppingcartCheck}" >
+                        お会計に進む
+                    </apex:outputLink>
+                </div>
+            </div>
+        
+    </div>
+    
+</apex:component>

@@ -1,0 +1,229 @@
+<apex:page controller="inquiry" standardStylesheets="false" showHeader="false"  docType="html-5.0">
+<head>
+    <title>M:usic - お問合せ -</title>
+    <c:metadata />
+    <style>
+        
+        .inquiry_nav {
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        button.btn.btn-primary.btn-lg.inquiry_left {
+            width: 50%;
+            margin-right: 0;
+            border-radius: 5px 0 0 0;
+        }
+        
+        button.btn.btn-primary.btn-lg.inquiry_right {
+            width: 50%;
+            margin-left: -10px;
+            background-color: #383435;
+            border-color: #383435;
+            border-radius: 0 5px 0 0;
+        }
+        
+        .inquiry_logo {
+            width: 270px;
+            margin-left: 50px;
+        }
+        
+        .inquiry_body {
+            margin: -45px 3px 0 3px;
+            padding-top: 50px;
+            border: 1px solid;
+            text-align: center;
+            border-radius: 0  0 5px 5px;
+        }
+        
+        ul.breadcrumb {
+            margin-left: 50px;
+        }
+        
+    </style>
+
+</head>
+
+<!-------------------------------------------
+                    header情報
+    ------------------------------------------->
+<html><body>
+<apex:outputPanel rendered="{!NOT(render)}">
+    <c:Music_header />
+</apex:outputPanel>
+<apex:outputPanel rendered="{!render}">
+    <c:Login_header />
+</apex:outputPanel>
+    
+
+
+<!-------------------------------------------
+                    問い合わせbody
+    ------------------------------------------->
+<section id="contact_body">
+    
+    <div class="container">
+    <div class="row">
+        <div class="col-4">
+        <img class="inquiry_logo" src="/resource/1525590750000/logo" alt="" />
+        </div>
+        <div  class="col-8">
+            {!UserName}様、サイトをご利用いただきありがとうございます。<br />
+            何か不明な点はございますでしょうか。<br />
+            気軽にお問い合わせくださいませ。
+        </div>
+    </div>
+    </div>
+    
+    <div class="inquiry_nav">
+        <button type="button" class="btn btn-primary btn-lg inquiry_left">問い合わせる</button>
+        <button type="button" class="btn btn-primary btn-lg inquiry_right">過去のお問い合わせ履歴</button>
+    </div>
+    <div class="inquiry_body">
+        
+    <div class="contact_title"><h2>お問合せ受付</h2></div>
+            
+        <!-------------------------------------------
+                            パンくずリスト
+            ------------------------------------------->
+            <ul class="breadcrumb">
+              <li itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb">
+                <a href="" itemprop="url">
+                  <span itemprop="title">お問い合わせ内容入力</span>
+                </a>
+              </li>
+              <li itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb">
+                <a href="" itemprop="url">
+                  <span itemprop="title">内容確認</span>
+                </a>
+              </li>
+              <li itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb">
+                <a href="" itemprop="url">
+                  <span itemprop="title">送信</span>
+                </a>
+              </li>
+            </ul>
+            
+            <!-------------------------------------------
+                            入力フォーム
+            ------------------------------------------->
+            <!-- Loginがない場合 -->
+            <apex:outputPanel rendered="{!NOT(render)}">
+                <apex:form >
+                    <div class="form-group">
+                        <label><div class="label">名前</div>
+                            <apex:input type="text" html-placeholder="田中太郎" required="true" html-autofocus="false" value="{!inputName}" style="width: 400px; "/>
+                        </label>
+                    </div>
+            
+                    <div class="form-group">
+                        <label><div class="label">メールアドレス</div>
+                            <apex:input type="email" html-placeholder="music@cc.jp" value="{!inputMail}"  required="true" style="width: 400px; " /></label>
+                    </div>
+                    <div class="form-group">
+                        <label><div class="label">電話番号</div>
+                            <apex:input type="tel" html-placeholder="000-0000-0000" value="{!inputPhone}" style="width: 400px; "/></label>
+                    </div>
+                    <div class="form-group">
+                    <div class="label">お問い合わせ種別</div>
+                        <apex:selectList id="type" value="{!inputCaseType}" size="1" style="width: 400px; ">
+                            <apex:selectOption itemValue="商品について"></apex:selectOption> 
+                            <apex:selectOption itemValue="ログイン・パスワードについて"></apex:selectOption>
+                            <apex:selectOption itemValue="その他"></apex:selectOption>
+                        </apex:selectList>
+                    </div>
+                    <div class="form-group">
+                        <label><div class="label">件名</div>
+                            <apex:input type="text" required="true" id="Subject" value="{!inputSubject}" style="width: 400px; "/></label>
+                    </div>
+                    <div class="form-group">
+                        <label><div class="label">お問い合わせ内容</div>
+                                <apex:input type="text" required="true" id="Description" value="{!inputDescription}" style="width: 400px; height: 200px;" />
+                        </label>
+                    </div>
+            
+                    <!--作成ボタン-->
+                    <p>
+                        <apex:commandButton action="{!Inquirycreate}" id="square_btn" value="送信する"/>
+                    </p>
+            
+                </apex:form>
+            </apex:outputPanel>
+            
+            <!-- Loginがある場合 -->
+            <apex:outputPanel rendered="{!render}">
+                <apex:form >
+                    <div class="form-group">
+                        <label><div class="label">名前</div>
+                            <apex:input type="text" html-placeholder="田中太郎" required="true" html-autofocus="false" value="{!UserName}" style="width: 400px; " />
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label><div class="label">メールアドレス</div>
+                            <apex:input type="email" html-placeholder="music@cc.jp" value="{!UserEmail}"  required="true" style="width: 400px; " /></label>
+                    </div>
+                    <div class="form-group">
+                        <label><div class="label">電話番号</div>
+                            <apex:input type="tel" html-placeholder="000-0000-0000" value="{!inputPhone}" style="width: 400px; "/></label>
+                    </div>
+                    <div class="form-group">
+                    <div class="label">お問い合わせ種別</div>
+                        <apex:selectList id="type" value="{!inputCaseType}" size="1" style="width: 400px; ">
+                            <apex:selectOption itemValue="商品について"></apex:selectOption> 
+                            <apex:selectOption itemValue="ログイン・パスワードについて"></apex:selectOption>
+                            <apex:selectOption itemValue="その他"></apex:selectOption>
+                        </apex:selectList>
+                    </div>
+                    <div class="form-group">
+                        <label><div class="label">件名</div>
+                            <apex:input type="text" required="true" id="Subject" value="{!inputSubject}" style="width: 400px; "/></label>
+                    </div>
+                    <div class="form-group">
+                        <label><div class="label">お問い合わせ内容</div>
+                                <apex:input type="text" required="true" id="Description" value="{!inputDescription}" style="width: 400px; height: 200px;" />
+                        </label>
+                    </div>
+            
+                    <!--作成ボタン-->
+                    <p>
+                        <apex:commandButton action="{!Inquirycreate}" id="square_btn" value="送信する"/>
+                    </p>
+        
+                </apex:form>
+            </apex:outputPanel>
+    </div>
+</section>
+    
+    
+
+    
+<!-------------------------------------------
+                お問い合わせ履歴一覧
+    ------------------------------------------->
+<apex:outputPanel rendered="{!InquiryHistory}">
+
+<section id="contact_right">
+    <div class="contact_title"><h2>お問合せ履歴</h2></div>
+    
+<apex:repeat value="{!CaseList}" var="case">
+     <div>件名</div>
+    {!case.Subject}
+    <div>日時</div>
+    {!case.CreatedDate}
+    <div>内容</div>
+    {!case.Description}
+</apex:repeat>
+   
+</section>
+</apex:outputPanel>
+    
+<!-------------------------------------------
+                footer情報
+    ------------------------------------------->
+<c:Music_footer />
+    
+</body>
+</html>
+
+    
+</apex:page>

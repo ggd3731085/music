@@ -1,0 +1,263 @@
+<apex:page controller="LoginController" standardStylesheets="false" showHeader="false" docType="html-5.0">
+
+<head>
+    <title>M:usic - このサイトについて -</title>
+    <c:metadata />
+</head>
+
+<html><body>
+<apex:outputPanel rendered="{!NOT(render)}">
+    <c:Music_header />
+</apex:outputPanel>
+<apex:outputPanel rendered="{!render}">
+    <c:Login_header />
+</apex:outputPanel>
+    
+<div class="container home-body">
+    <h1>
+        このサイトについて
+    </h1>
+    <div class="about_1">
+        ・作成者　財前咲季 <br />
+        ・勉強用のサイトです<br />
+    </div>
+    <div class="about_2">
+        使用しているオブジェクト
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">オブジェクト名</th>
+          <th scope="col">API参照名</th>
+          <th scope="col">説明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">1</th>
+          <td>ユーザ</td>
+          <td>User__c </td>
+          <td>会員登録した人の情報</td>
+        </tr>
+        <tr>
+          <th scope="row">2</th>
+          <td>セッション</td>
+          <td>session__c </td>
+          <td>セッション情報</td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td>商品</td>
+          <td>Product2</td>
+          <td>販売している商品の情報</td>
+        </tr>
+        <tr>
+          <th scope="row">4</th>
+          <td>ケース</td>
+          <td>Case</td>
+          <td>お問い合わせされると、ここに入る</td>
+        </tr>
+        <tr>
+          <th scope="row">5</th>
+          <td>問い合わせ履歴</td>
+          <td>CaseHistory__c </td>
+          <td>ケースとユーザの子オブジェクト</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div class="about_2">
+        使用しているVisualForceページ
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">名前</th>
+          <th scope="col">説明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>home</td>
+          <td>基本となるトップページ</td>
+        </tr>
+        <tr>
+          <td>About</td>
+          <td>サイト説明ページ（現在のページ） </td>
+        </tr>
+        <tr>
+          <td>shop</td>
+          <td>商品一覧を表示したページ</td>
+        </tr>
+        <tr>
+          <td>inquiry</td>
+          <td>お問い合わせを受付・履歴を表示するページ </td>
+        </tr>
+        <tr>
+          <td>category</td>
+            <td>カテゴリーごとに商品一覧を表示するページ<br />
+            ページにとぶ際に引数を渡してSELECTした結果を表示しているため、ページは１つです。</td>
+        </tr>
+        <tr>
+          <td>inquiry</td>
+          <td>お問い合わせを受付・履歴を表示するページ </td>
+        </tr>
+        <tr>
+          <td>UserCreate</td>
+          <td>会員登録できる。作成すると、ユーザに情報が書き込まれる。</td>
+        </tr>
+        <tr>
+          <td>homecss</td>
+          <td>スタイル調整シート。Bootstrap、fontawasomeも読み込んでいます。</td>
+        </tr>
+        <tr>
+          <td>ShoppingcartCheck</td>
+          <td>カートのお会計進むボタンを押下した時の確認画面</td>
+        </tr>
+        <tr>
+          <td>Purchased</td>
+          <td>購入後のThanks画面</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div class="about_2">
+        使用しているVisualコンポーネント
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">名前</th>
+          <th scope="col">説明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Music_header</td>
+          <td>
+              ログインしていない状態のヘッダーです。右上にはログインできるモーダルを表示しています。
+          </td>
+        </tr>
+        <tr>
+          <td>Login_header</td>
+          <td>
+                ログインしている状態のヘッダーです。右上には名前とログアウトできるボタンを表示します。
+          </td>
+        </tr>
+        <tr>
+          <td>ProductList</td>
+          <td>商品オブジェクトから繰り返しカード型で表示</td>
+        </tr>
+        <tr>
+          <td>ProductList6</td>
+          <td>商品オブジェクトから最大６件、最終更新日が新しい順で繰り返しカード型で表示（トップ用）</td>
+        </tr>
+        <tr>
+          <td>Side_header</td>
+            <td>カテゴリーごとのリストとTwitterのサイドヘッダー</td>
+        </tr>
+        <tr>
+          <td>metadata</td>
+          <td>全ページ共通のメタデータ </td>
+        </tr>
+        <tr>
+          <td>Music_footer</td>
+          <td>サイトのフッター。全ページの下に表示する。</td>
+        </tr>
+        <tr>
+          <td>homecss</td>
+          <td>スタイル調整シート。Bootstrap、fontawasomeも読み込んでいます。</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div class="about_2">
+        使用しているApexクラス
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">名前</th>
+          <th scope="col">説明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>inquiry</td>
+          <td>
+              ログインしている場合、Cookieからセッションを取得し、ユーザを検索する。<br />
+              ユーザに紐づいている問い合わせ履歴がある場合、履歴を表示する。<br />
+              また、入力フォームにはあらかじめ名前、Emailなどユーザ情報から入力する。<br />
+              
+              ログインしていない場合、上記のものを表示しないように出し分ける。<br />
+              
+              問い合わせを送信すると、ケースが作成される。<br />
+              紐づくユーザがある場合は問い合わせ履歴が作成される仕様です。<br />
+          </td>
+        </tr>
+        <tr>
+          <td>LoginController</td>
+          <td>
+              ログインした時、ユーザ名とパスワードが一致していたら<br />
+              Cookie情報にセッション名を書き込み、セッションオブジェクトを更新してログインをする。<br />
+              また、常にCookieからセッション情報を取得し、<br />
+              紐づくセッションオブジェクトがあるかどうかを判断している。<br />
+              ある場合、ヘッダーをログイン済みの方を表示し、ユーザから名前を取得して表示する。
+              また、ショッピングカート追加・削除、商品購入の動きも記述しています。
+          </td>
+        </tr>
+        
+      </tbody>
+    </table>
+    
+</div>
+    
+
+ 
+
+
+<!-- モーダル・ダイアログ -->
+<div class="modal fade" id="sampleModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">M:usic ログイン画面</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>×</span></button>  
+            </div>
+            <!-- モーダル内容 -->
+            <div class="modal-body">
+                <apex:form >
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-3">ID</div>
+                            <div class="col-md-9">
+                                <apex:inputText value="{!inputUser.id__c}" />
+                            </div>
+                   　    </div>
+                        <div class="row">
+                            <div class="col-md-3">PassWord</div>
+                            <div class="col-md-9">
+                                <apex:inputSecret value="{!inputUser.password__c}" />
+                            </div>
+                   　    </div>
+                        <div>
+                            <apex:commandButton value="Login" action="{!actionLogin}" />
+                        </div>
+                    </div>
+                    <div class="modal-creatuser">
+                    新規登録は<a href="{!$Page.UserCreate}">こちら</a>
+                    </div>
+                </apex:form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<c:Music_footer />
+
+    </body></html>
+</apex:page>

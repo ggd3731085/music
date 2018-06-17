@@ -1,0 +1,288 @@
+public class LoginController  {
+
+    /********************************
+     * 　　変数定義
+     * *******************************/
+    //ログイン状態
+    public User__c inputUser {get; set;}    
+    public User__c loginUser {get; set;} 
+    public String UserId{get; set;} 
+    public String UserName {get; set;} 
+    public boolean render {get; set;} 
+    public String CookieId ;
+    public String objectId {get; set;}
+    
+    //新規ユーザ
+    public String inputNewName {get; set;}
+    public String inputNewEmail{get; set;}
+    public String inputNewPassword {get; set;}
+    
+    //ボタンから渡されるパラメータ
+    public String param{get;set;}
+    
+     //ショッピングカート
+    public String inputProductId{get;set;}
+    public String CancelProductId{get;set;}
+    public Integer Cartcount{get;set;}
+    public Decimal CartTotal{get;set;}
+    
+    //検索　
+    public String inputSearch {get; set;}
+      
+    /********************************
+     * 　　表示する商品リスト
+     * *******************************/
+    public List<product2> nameList {
+    get {
+        List<product2> nameList = new List<product2>();
+        nameList = [select Id,Name,price__c, Description,img__c,Resource__c from product2 order by LastModifiedDate desc];
+        return nameList;
+
+    }set;}
+    
+    public List<product2> categoryList {
+    get {
+        List<product2> categoryList = new List<product2>();
+        param = System.currentPageReference().getParameters().get('p');
+        categoryList = [select Id,Name,price__c, Description,img__c,Resource__c from product2 where Family = :param ];
+        return categoryList;
+        
+    }set;}
+    
+    public List<product2> ProductBuyList {
+    get {
+        List<product2> ProductBuyList = new List<product2>();
+        inputProductId = System.currentPageReference().getParameters().get('i');
+        ProductBuyList = [select Id,Name,price__c, Description,img__c,Resource__c from product2 where Id = :inputProductId];
+        return ProductBuyList;
+
+    }set;}
+    
+    public List<shoppingcart__c > CartList {
+    get {
+        List<shoppingcart__c> CartList = new List<shoppingcart__c>();
+        CartList = [select Id,img__c,Product__c,User__c,ProductName__c ,price__c,Description__c from shoppingcart__c where User__c = :UserId  and Purchased__c = false];
+        return CartList;
+    }set;}
+        
+    public List<product2> searchList {
+    get {
+        List<product2> searchList = new List<product2>();
+        searchList = [select Id,Name,price__c, Description,img__c,Resource__c from product2 where Family = :inputSearch ];
+        return searchList;
+        
+    }set;}
+  
+
+     /********************************
+     * 　　コンストラクタ
+     * ・ログイン状態を判断する
+     * *******************************/
+    public LoginController() {
+        inputUser = new User__c();
+        
+        //クッキー情報を取得
+        Cookie get_cookie = ApexPages.currentPage().getCookies().get(CommonController.theCookieName);
+        
+        //クッキー情報がある場合
+        if (get_cookie == null) {
+      render = false;
+        }else{
+            System.debug('sessionidは'+get_cookie.getValue());
+            
+            CookieId = get_cookie.getValue();
+            List<session__c> session = [Select Id,Name,userId__c, available__c, sessionId__c from Session__c where sessionId__c  = :CookieId];
+        
+            //セッション情報がSFAにある場合
+            if(session.size() == 1){
+                render = true;
+                System.debug('【header】セッション情報に見つかりました.Emailは'+session[0].userId__c);
+                List<user__c> user = [Select id__c,Name  from user__c where id__c  = :session[0].userId__c];
+                UserName = user[0].Name;
+                UserId = user[0].Id;
+                Cartcount = [select count() from shoppingcart__c where User__c  = :UserId and Purchased__c = false];
+                CartTotal = 0;
+                if(Cartcount>0){
+                    List<shoppingcart__c> total = [select price__c from shoppingcart__c where User__c  = :UserId and Purchased__c = false];
+          Integer i ;
+                    for(i = 0; i < Cartcount; i++){
+                      CartTotal += total[i].price__c;
+                    }
+                }
+
+            }
+        }
+        
+        inputProductId = (System.currentPageReference().getParameters().get('i'));
+        CancelProductId = (System.currentPageReference().getParameters().get('c'));
+        
+        
+
+                
+    }
+    
+    /********************************
+     * 　　購入ボタンを押下
+     * *******************************/
+    public PageReference Purchased(){
+        List<shoppingcart__c> CartList = new List<shoppingcart__c>();
+        CartList = [select Id,Purchased__c from shoppingcart__c where User__c = :UserId and Purchased__c = false];
+   
+        System.debug(Cartcount);
+        for(Integer i=0; i<Cartcount; i++){
+            CartList[i].Purchased__c = true;
+            update CartList[i];
+        }
+        
+        return page.Purchased;
+    }
+    
+
+
+    /********************************
+     * 　　カゴに入れるを押下
+     * *******************************/
+    
+    public void Startaction(){
+        if(inputProductId!=null){
+            if(UserId==null){
+                //test__c.test01__c.addError('エラーが発生しました');
+            } else {
+                shoppingcart();
+            }
+        }
+        if(CancelProductId!=null){
+            cancelcart();
+        }
+    }
+    
+    public void shoppingcart(){
+        
+        if(UserName!=null){
+            List<shoppingcart__c> UserCartList = new List<shoppingcart__c>();
+          UserCartList = [select Id, Product__c  from shoppingcart__c where Product__c  = :inputProductId and User__c = :UserId];
+            
+            if( UserCartList.size() == 0 ) {
+                shoppingcart__c cart = new shoppingcart__c();
+                System.debug(inputProductId);
+                cart.Product__c  = inputProductId;
+                cart.User__c = UserId;
+                insert cart;
+            }
+        }
+        
+    }
+    public void cancelcart(){
+        if(UserName!=null){
+            List<shoppingcart__c> cancelcart = new List<shoppingcart__c>();
+            cancelcart = [select Id, Product__c  from shoppingcart__c where Product__c  = :CancelProductId];
+            If( cancelcart.size() >0 ){
+                delete cancelcart;
+            }
+        }
+        
+    }
+    
+    
+    /********************************
+     * 　　会員登録
+     * *******************************/
+    public PageReference ContactUser(){
+      User__c user = new User__c();
+        user.Name  = inputNewName;
+        user.id__c  = inputNewEmail;
+        user.password__c = inputNewPassword;
+        insert user;
+        return page.UserCreated;
+    }
+    
+     /********************************
+     * 　　ログイン
+     * *******************************/
+    public PageReference actionLogin() {
+
+        //IDとPasswordをチェック
+        User__c user = login(inputUser);
+        
+        //ユーザ
+        if (user != null) {
+            String sessionId = generateNewSessionId();
+            writeSessionId(user, sessionId);
+            writeSessionIdToCookie(sessionId);
+            
+            render=true;
+            return Page.home.setRedirect(false);
+        } else {
+            removeSessionIdOfCookie();
+            return null;
+        }
+    }
+
+    public User__c login(User__c inUser) {
+        List<user__c> users = [Select Id, id__c, Name, password__c FROM User__c WHERE id__c = :inUser.id__c];
+        if (users.size() == 1) {
+            User__c aUser = users[0];
+            if (aUser.password__c != null && aUser.password__c.equals(inUser.password__c)) {
+                loginUser = aUser;
+                return loginUser;
+            }
+        }
+        
+        ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.INFO, 'ログイン失敗'));
+        return null;
+    }
+    
+    
+    private String generateNewSessionId() {
+        DateTime dt = DateTime.now();      
+        //現在時刻のMD5ハッシュ値を取得
+        return EncodingUtil.convertToHex(Crypto.generateDigest('md5', Blob.valueOf(dt.formatLong())));
+    }
+    
+    private void writeSessionId(User__c inUser, String inSessionID) {
+        if (inSessionID != null && inUser != null) {
+            Session__c session = null;
+            List <session__c> sessions = [SELECT ID FROM Session__c WHERE userId__c = :inUser.id__c];
+            //既にセッションがある場合は削除
+            if (sessions.size() != 1) {
+                if (sessions.size() > 0) {
+                    delete sessions;
+                }
+                sessions = null;
+            }
+            //セッションがなければ作成
+            if (sessions == null) {
+                session = new Session__c(userId__c = inUser.id__c);
+            } else {
+                session = sessions[0];
+            }
+            session.sessionId__c = generateNewSessionId();
+            session.available__c = DateTime.now().addSeconds(CommonController.releaseTime);
+            upsert session;
+        }
+    }
+    
+    public void writeSessionIdToCookie(String inSessionId) {
+        Cookie aCookie = new Cookie(CommonController.theCookieName, inSessionId, '/',  CommonController.releaseTime, true);
+        ApexPages.currentPage().setCookies(new Cookie[] {aCookie});
+
+    }
+    
+    public void removeSessionIdOfCookie() {
+        Cookie aCookie = new Cookie(CommonController.theCookieName, 'deleted', '/',  -1, true);
+        ApexPages.currentPage().setCookies(new Cookie[] {aCookie});
+    }
+    
+    /********************************
+     * 　　ログアウト
+     * *******************************/
+    public PageReference logout() {
+        
+        session__c session = [Select sessionId__c from Session__c where sessionId__c = :CookieId limit 1];
+        session.sessionId__c  = 'logout';
+        system.debug(session);
+        update session;
+        return page.home.setRedirect(true);
+    }    
+
+}
